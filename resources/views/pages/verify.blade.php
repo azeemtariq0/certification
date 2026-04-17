@@ -2,6 +2,47 @@
 
 @section('title', 'Certificate Verification - S2 Certification')
 
+@section('styles')
+<style>
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        background: white !important;
+    }
+    
+    body > * {
+        display: none !important;
+    }
+
+    .print-only-container {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        background: white;
+    }
+    
+    @page { 
+        size: A4 portrait; 
+        margin: 15mm; 
+    }
+    
+    .print-cert {
+        border: 4px solid #1a202c !important;
+        border-radius: 10px;
+        padding: 40px !important;
+        box-shadow: none !important;
+    }
+    .print-cert .card-header {
+        border-bottom: 2px solid #eee !important;
+        margin-bottom: 20px;
+    }
+}
+</style>
+@endsection
+
 @section('content')
     <!-- Page Title Bar -->
     <div class="page-title-bar">
@@ -143,51 +184,56 @@
             resultContainer.classList.remove('d-none');
 
             if (data.success) {
-                const cert = data.data;
-                resultContent.innerHTML = `
-                    <div class="card border-0 shadow-lg overflow-hidden fade-in" style="border-radius: 12px; border-top: 5px solid var(--theme-green);">
-                        <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
-                            <h5 class="fw-bold mb-0" style="color: var(--dark-blue)">Verification Result Found</h5>
-                            <span class="badge bg-success px-3 py-2"><i class="fas fa-check-circle me-1"></i> ${cert.status} / Valid</span>
-                        </div>
-                        <div class="card-body p-4 p-md-5">
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <p class="mb-1 text-muted small text-uppercase fw-bold">Company Name</p>
-                                    <h5 class="fw-bold" style="color: var(--dark-blue)">${cert.company_name}</h5>
+                const certs = data.data;
+                let html = `<h4 class="mb-4 text-center fw-bold" style="color: var(--dark-blue)">Found ${certs.length} Certificate${certs.length > 1 ? 's' : ''}</h4>`;
+                
+                certs.forEach((cert, index) => {
+                    html += `
+                        <div class="card border-0 shadow-lg overflow-hidden fade-in mb-4" id="cert-${index}" style="border-radius: 12px; border-top: 5px solid var(--theme-green);">
+                            <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                                <h5 class="fw-bold mb-0" style="color: var(--dark-blue)">Verification Result</h5>
+                                <span class="badge bg-success px-3 py-2"><i class="fas fa-check-circle me-1"></i> ${cert.status} / Valid</span>
+                            </div>
+                            <div class="card-body p-4 p-md-5">
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <p class="mb-1 text-muted small text-uppercase fw-bold">Company Name</p>
+                                        <h5 class="fw-bold" style="color: var(--dark-blue)">${cert.company_name}</h5>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-1 text-muted small text-uppercase fw-bold">Certificate No</p>
+                                        <h5 class="fw-bold" style="color: var(--theme-blue)">${cert.certificate_no}</h5>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-1 text-muted small text-uppercase fw-bold">Standard</p>
+                                        <p class="fw-bold mb-0">${cert.standard}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-1 text-muted small text-uppercase fw-bold">Verified On</p>
+                                        <p class="fw-bold mb-0 text-success">${cert.verified_on}</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="mb-1 text-muted small text-uppercase fw-bold">Scope of Certification</p>
+                                        <p class="mb-0">${cert.scope}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-1 text-muted small text-uppercase fw-bold">Issue Date</p>
+                                        <p class="fw-bold mb-0">${cert.issue_date}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="mb-1 text-muted small text-uppercase fw-bold">Expiry Date</p>
+                                        <p class="fw-bold mb-0">${cert.expiry_date}</p>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <p class="mb-1 text-muted small text-uppercase fw-bold">Certificate No</p>
-                                    <h5 class="fw-bold" style="color: var(--theme-blue)">${cert.certificate_no}</h5>
-                                </div>
-                                <div class="col-md-6">
-                                    <p class="mb-1 text-muted small text-uppercase fw-bold">Standard</p>
-                                    <p class="fw-bold mb-0">${cert.standard}</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <p class="mb-1 text-muted small text-uppercase fw-bold">Verified On</p>
-                                    <p class="fw-bold mb-0 text-success">${cert.verified_on}</p>
-                                </div>
-                                <div class="col-12">
-                                    <p class="mb-1 text-muted small text-uppercase fw-bold">Scope of Certification</p>
-                                    <p class="mb-0">${cert.scope}</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <p class="mb-1 text-muted small text-uppercase fw-bold">Issue Date</p>
-                                    <p class="fw-bold mb-0">${cert.issue_date}</p>
-                                </div>
-                                <div class="col-md-6">
-                                    <p class="mb-1 text-muted small text-uppercase fw-bold">Expiry Date</p>
-                                    <p class="fw-bold mb-0">${cert.expiry_date}</p>
+                                
+                                <div class="mt-5 pt-4 border-top text-center no-print">
+                                    <button class="btn btn-theme px-4" onclick="printCertificate(${index})"><i class="fas fa-print me-2"></i> Print This Certificate</button>
                                 </div>
                             </div>
-                            
-                            <div class="mt-5 pt-4 border-top text-center">
-                                <button class="btn btn-outline-dark btn-sm me-2" onclick="window.print()"><i class="fas fa-print me-1"></i> Print Result</button>
-                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                });
+                resultContent.innerHTML = html;
             } else {
                 resultContent.innerHTML = `
                     <div class="alert alert-danger p-4 text-center shadow-sm fade-in" style="border-radius: 8px;">
@@ -205,5 +251,33 @@
             alert('An error occurred while searching. Please try again.');
         });
     });
+
+    function printCertificate(index) {
+        const certHtml = document.getElementById('cert-' + index).innerHTML;
+        
+        let existingContainer = document.querySelector('.print-only-container');
+        if (existingContainer) {
+            existingContainer.remove();
+        }
+        
+        let printContainer = document.createElement('div');
+        printContainer.className = 'print-only-container';
+        document.body.appendChild(printContainer);
+        
+        printContainer.innerHTML = '<div class="print-cert">' + certHtml + '</div>';
+        
+        const noPrintEls = printContainer.querySelectorAll('.no-print');
+        noPrintEls.forEach(el => el.remove());
+        
+        window.onafterprint = function() {
+            if (printContainer && printContainer.parentNode) {
+                printContainer.parentNode.removeChild(printContainer);
+            }
+        };
+        
+        setTimeout(() => {
+            window.print();
+        }, 100);
+    }
 </script>
 @endsection

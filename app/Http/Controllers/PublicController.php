@@ -34,25 +34,24 @@ class PublicController extends Controller
     public function apiSearch(Request $request)
     {
         $search = $request->input('query');
-        $certificate = null;
+        $certificates = collect();
 
         if ($search) {
-            $certificate = \App\Models\Certificate::where('company_name', 'LIKE', "%$search%")
+            $certificates = \App\Models\Certificate::where('company_name', 'LIKE', "%$search%")
                 ->orWhere('standard', 'LIKE', "%$search%")
-                ->first();
+                ->orWhere('certificate_no', 'LIKE', "%$search%")
+                ->get();
         }
 
-        if (!$certificate) {
+        if ($certificates->isEmpty()) {
             return response()->json([
                 'success' => false,
                 'message' => 'No certificate matches your search.'
             ]);
         }
 
-        // Return a partial view or JSON data. JSON is cleaner for AJAX.
-        return response()->json([
-            'success' => true,
-            'data' => [
+        $data = $certificates->map(function ($certificate) {
+            return [
                 'company_name' => $certificate->company_name,
                 'certificate_no' => $certificate->certificate_no,
                 'standard' => $certificate->standard,
@@ -61,7 +60,13 @@ class PublicController extends Controller
                 'issue_date' => date('d M Y', strtotime($certificate->issue_date)),
                 'expiry_date' => date('d M Y', strtotime($certificate->expiry_date)),
                 'verified_on' => date('d M Y')
-            ]
+            ];
+        });
+
+        // Return a partial view or JSON data. JSON is cleaner for AJAX.
+        return response()->json([
+            'success' => true,
+            'data' => $data
         ]);
     }
 }
