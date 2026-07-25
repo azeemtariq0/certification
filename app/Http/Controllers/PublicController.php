@@ -31,6 +31,11 @@ class PublicController extends Controller
         return view('pages.verify');
     }
 
+    public function certificatePrint(\App\Models\Certificate $certificate)
+    {
+        return view('pages.certificate-print', compact('certificate'));
+    }
+
     public function apiSearch(Request $request)
     {
         $search = $request->input('query');
@@ -96,17 +101,18 @@ class PublicController extends Controller
             return ['name' => $key ?: 'Unknown', 'count' => $items->count()];
         })->values();
 
-        // Now apply checked sidebar filters
-        if ($request->has('countries') && is_array($request->input('countries'))) {
+        // Now apply checked sidebar filters (only when the filter array is non-empty,
+        // otherwise an empty whereIn([]) would match zero rows and hide valid results)
+        if (!empty($request->input('countries')) && is_array($request->input('countries'))) {
             $query->whereIn('country', $request->input('countries'));
         }
-        if ($request->has('cities') && is_array($request->input('cities'))) {
+        if (!empty($request->input('cities')) && is_array($request->input('cities'))) {
             $query->whereIn('city', $request->input('cities'));
         }
-        if ($request->has('standards') && is_array($request->input('standards'))) {
+        if (!empty($request->input('standards')) && is_array($request->input('standards'))) {
             $query->whereIn('standard', $request->input('standards'));
         }
-        if ($request->has('statuses') && is_array($request->input('statuses'))) {
+        if (!empty($request->input('statuses')) && is_array($request->input('statuses'))) {
             $query->whereIn('status', $request->input('statuses'));
         }
 

@@ -1,9 +1,14 @@
 @extends('layouts.admin')
 
+@section('title', 'Users')
+
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold">User Management</h2>
-    <a href="{{ route('admin.users.create') }}" class="btn btn-red">
+    <div>
+        <h2 class="page-heading mb-0">User Management</h2>
+        <p class="text-muted small mb-0">Manage admin users and their access.</p>
+    </div>
+    <a href="{{ route('admin.users.create') }}" class="btn btn-theme px-3 py-2">
         <i class="fas fa-plus me-1"></i> Add User
     </a>
 </div>

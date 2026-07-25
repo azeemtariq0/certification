@@ -13,8 +13,12 @@ class DashboardController extends Controller
         $stats = [
             'certificates' => Certificate::count(),
             'active_certificates' => Certificate::where('status', 'Active')->count(),
+            'inactive_certificates' => Certificate::where('status', '!=', 'Active')->count(),
             'users' => User::count(),
         ];
-        return view('admin.dashboard', compact('stats'));
+
+        $recentCertificates = Certificate::latest()->take(5)->get();
+
+        return view('admin.dashboard', compact('stats', 'recentCertificates'));
     }
 }

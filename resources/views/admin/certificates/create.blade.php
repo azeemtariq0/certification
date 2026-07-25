@@ -1,11 +1,13 @@
 @extends('layouts.admin')
 
+@section('title', 'Add Certificate')
+
 @section('content')
 <div class="mb-4">
     <a href="{{ route('admin.certificates.index') }}" class="text-muted text-decoration-none small">
         <i class="fas fa-arrow-left me-1"></i> Back to List
     </a>
-    <h2 class="fw-bold mt-2">Add New Certificate</h2>
+    <h2 class="page-heading mt-2">Add New Certificate</h2>
 </div>
 
 <div class="row">

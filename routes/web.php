@@ -11,6 +11,7 @@ Route::get('/about', [PublicController::class, 'about'])->name('about');
 Route::get('/contact', [PublicController::class, 'contact'])->name('contact');
 Route::get('/verify', [PublicController::class, 'verify'])->name('verify');
 Route::post('/verify', [PublicController::class, 'apiSearch'])->name('verify.search');
+Route::get('/verify/{certificate}/print', [PublicController::class, 'certificatePrint'])->name('verify.print');
 
 // Admin Auth Routes
 Route::get('/admin/login', [App\Http\Controllers\Admin\AuthController::class, 'showLogin'])->name('admin.login');

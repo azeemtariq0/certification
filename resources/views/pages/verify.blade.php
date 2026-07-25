@@ -623,68 +623,6 @@
         border-bottom: 1px solid #f1f5f9;
     }
 
-    /* Print styling updates */
-    @media print {
-        body {
-            background: white !important;
-        }
-        body > * {
-            display: none !important;
-        }
-        .print-only-container {
-            display: block !important;
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            background: white;
-            padding: 30px !important;
-        }
-        .print-cert-card {
-            border: 4px double #1e3a8a !important;
-            border-radius: 12px;
-            padding: 50px !important;
-            box-shadow: none !important;
-            background: white !important;
-        }
-        .print-cert-header {
-            text-align: center;
-            border-bottom: 3px solid #1e3a8a !important;
-            padding-bottom: 25px;
-            margin-bottom: 35px;
-        }
-        .print-cert-title {
-            color: #1e3a8a !important;
-            font-size: 2.2rem !important;
-            font-weight: 800 !important;
-            text-transform: uppercase;
-        }
-        .print-table {
-            width: 100% !important;
-            margin-top: 30px;
-            border-collapse: collapse;
-        }
-        .print-table th {
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            color: #555;
-            padding: 12px 6px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-        .print-table td {
-            font-size: 1.1rem;
-            font-weight: 700;
-            padding: 12px 6px;
-            border-bottom: 1px solid #ddd;
-        }
-        .print-cert-footer {
-            margin-top: 60px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #777;
-        }
-    }
 </style>
 @endsection
 
@@ -848,28 +786,6 @@
                             </div>
                         </div>
 
-                        <!-- Accordion Filter: Certification Body (Premium Locked Look) -->
-                        <div class="filter-accordion-item filter-locked">
-                            <button class="filter-accordion-btn collapsed" disabled>
-                                <span class="d-flex align-items-center gap-2">
-                                    Certification Body
-                                    <span class="filter-locked-badge"><i class="fas fa-lock"></i> Premium</span>
-                                </span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                        </div>
-
-                        <!-- Accordion Filter: Accreditation Body (Premium Locked Look) -->
-                        <div class="filter-accordion-item filter-locked">
-                            <button class="filter-accordion-btn collapsed" disabled>
-                                <span class="d-flex align-items-center gap-2">
-                                    Accreditation Body
-                                    <span class="filter-locked-badge"><i class="fas fa-lock"></i> Premium</span>
-                                </span>
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                        </div>
-
                     </div>
                 </div>
 
@@ -889,21 +805,6 @@
                     <!-- Cards Listing Container -->
                     <div id="resultsCardContainer">
                         <!-- Result cards dynamically injected -->
-                    </div>
-
-                    <!-- Premium SignUp Wall Mock -->
-                    <div class="premium-restricted-callout mt-5 d-none" id="premiumSignUpWall">
-                        <div class="premium-lock-icon">
-                            <i class="fas fa-shield-halved"></i>
-                        </div>
-                        <h4>Access Premium Database Search</h4>
-                        <p id="premiumLimitMessage">
-                            We found more matching entities in our system. Set up a free verification account to view all search records, configure custom alerts, and download certified trade reports.
-                        </p>
-                        <div class="d-flex justify-content-center gap-3">
-                            <a href="{{ route('admin.login') }}" class="btn btn-light fw-bold px-4 py-2" style="border-radius: 8px;">Log In</a>
-                            <a href="{{ route('contact') }}" class="btn btn-theme fw-bold px-4 py-2" style="background: var(--theme-green); border-radius: 8px;">Contact Support</a>
-                        </div>
                     </div>
 
                 </div>
@@ -977,19 +878,21 @@
                     </tbody>
                 </table>
 
-                <div class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top">
-                    <button type="button" class="btn btn-outline-secondary px-4 py-2" data-bs-dismiss="modal" style="border-radius: 8px;">Close</button>
-                    <button type="button" class="btn btn-theme px-4 py-2" id="printCertificateModalBtn" style="border-radius: 8px;">
-                        <i class="fas fa-print me-2"></i> Print Certificate Transcript
-                    </button>
+                <div class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top flex-wrap gap-2">
+                    <button type="button" class="btn btn-outline-secondary px-4 py-2" data-bs-dismiss="modal" style="border-radius: 50px;">Close</button>
+                    <div class="d-flex gap-2">
+                        <a href="#" target="_blank" class="btn btn-outline-primary px-4 py-2" id="printCertificateModalBtn" style="border-radius: 50px;">
+                            <i class="fas fa-print me-2"></i> Print
+                        </a>
+                        <a href="#" target="_blank" class="btn btn-theme px-4 py-2" id="downloadCertificateModalBtn" style="background: var(--theme-green); border-radius: 50px;">
+                            <i class="fas fa-file-arrow-down me-2"></i> Download PDF
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Modal print layout container -->
-<div id="certificatePrintArea" class="d-none"></div>
 
 @endsection
 
@@ -1009,9 +912,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultsCardContainer = document.getElementById('resultsCardContainer');
     const resultsCountHeader = document.getElementById('resultsCountHeader');
     const clearFiltersBtn = document.getElementById('clearFiltersBtn');
-    const premiumSignUpWall = document.getElementById('premiumSignUpWall');
-    const printBtn = document.getElementById('printCertificateModalBtn');
-    
+    const modalPrintBtn = document.getElementById('printCertificateModalBtn');
+    const modalDownloadBtn = document.getElementById('downloadCertificateModalBtn');
+
+    // Build the printable certificate URL for a given certificate id
+    function printUrl(id) {
+        return '{{ url('verify') }}/' + id + '/print';
+    }
+
     // State Variables
     let currentQuery = '';
     let selectedFilters = {
@@ -1250,23 +1158,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Result summary text
         const totalFound = res.total;
         const filteredTotal = res.filtered_total;
-        
+
         if (totalFound !== filteredTotal) {
             resultsCountHeader.innerHTML = `Showing ${filteredTotal} of ${totalFound} entities matching "${escapeHtml(currentQuery)}"`;
         } else {
-            resultsCountHeader.innerHTML = `${totalFound} certified entities found matching "${escapeHtml(currentQuery)}"`;
-        }
-        
-        // Dynamic visibility of premium SignUp wall
-        if (totalFound > 5) {
-            premiumSignUpWall.classList.remove('d-none');
-            // If total matching is greater than 5, limit card display to 5 to simulate premium limitation
-            document.getElementById('premiumLimitMessage').textContent = `We found ${totalFound - 5} more certified entities matching "${currentQuery}". Access the full database and unlock export/search features by signing up for S2 Premium Database access.`;
-        } else {
-            premiumSignUpWall.classList.add('d-none');
+            resultsCountHeader.innerHTML = `${totalFound} certified ${totalFound === 1 ? 'entity' : 'entities'} found matching "${escapeHtml(currentQuery)}"`;
         }
 
-        const cardsToRender = res.data.slice(0, 5); // Limit to first 5 for premium preview
+        // Render every matching result — no login or premium gate
+        const cardsToRender = res.data;
 
         cardsToRender.forEach(item => {
             // Compute initials
@@ -1305,17 +1205,22 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </div>
                     
-                    <div class="d-flex justify-content-between align-items-center">
-                        <button class="view-profile-cta-btn" data-id="${item.id}">
-                            View Profile <i class="fas fa-arrow-right small"></i>
-                        </button>
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="d-flex gap-2">
+                            <button class="view-profile-cta-btn view-btn">
+                                <i class="fas fa-eye small"></i> View Details
+                            </button>
+                            <a href="${printUrl(item.id)}?download=1" target="_blank" class="view-profile-cta-btn" style="text-decoration:none;">
+                                <i class="fas fa-file-arrow-down small"></i> PDF
+                            </a>
+                        </div>
                         <span class="text-muted small" style="font-size:0.75rem;"><i class="fas fa-shield-alt text-success me-1"></i>Verified on ${item.verified_on}</span>
                     </div>
                 </div>
             `;
-            
+
             // Attach Modal event listener
-            card.querySelector('.view-profile-cta-btn').addEventListener('click', function() {
+            card.querySelector('.view-btn').addEventListener('click', function() {
                 openCertificateDetailsModal(item);
             });
 
@@ -1343,7 +1248,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         resultsCountHeader.innerHTML = `0 certified entities matching "${escapeHtml(currentQuery)}"`;
-        premiumSignUpWall.classList.add('d-none');
     }
 
     // Update filter lists and counts
@@ -1415,86 +1319,17 @@ document.addEventListener('DOMContentLoaded', function() {
         statusBadge.className = item.status.toLowerCase() === 'active' ? 'entity-badge-valid fs-6 py-2 px-4 mb-2' : 'entity-badge-invalid fs-6 py-2 px-4 mb-2';
         statusBadge.innerHTML = `<i class="fas ${item.status.toLowerCase() === 'active' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${item.status}`;
 
+        // Wire up print / download buttons to the printable certificate page
+        modalPrintBtn.href = printUrl(item.id) + '?print=1';
+        modalDownloadBtn.href = printUrl(item.id) + '?download=1';
+
         // Launch Modal
         const myModal = new bootstrap.Modal(document.getElementById('certificateDetailModal'));
         myModal.show();
     }
 
-    // Printing flow
-    printBtn.addEventListener('click', function() {
-        if (!currentCertData) return;
-        
-        const printArea = document.getElementById('certificatePrintArea');
-        printArea.innerHTML = `
-            <div class="print-cert-card">
-                <div class="print-cert-header">
-                    <div style="font-weight: 800; font-size: 1.1rem; color: #555; text-transform: uppercase;">Verification Ledger Record</div>
-                    <div class="print-cert-title">S2 Certification</div>
-                    <div style="font-size: 0.95rem; color: #666; font-style: italic; margin-top: 6px;">Global Quality & Standard Management Systems Registry</div>
-                </div>
-                
-                <h4 style="text-align: center; margin-bottom: 25px; font-weight: 700; color: #111;">OFFICIAL REGISTRATION VERIFICATION TRANSCRIPT</h4>
-                
-                <table class="print-table">
-                    <tr>
-                        <th style="width: 35%;">Certified Entity</th>
-                        <td>${currentCertData.company_name}</td>
-                    </tr>
-                    <tr>
-                        <th>Certificate Identification No</th>
-                        <td style="color: #1e3a8a; font-family: monospace;">${currentCertData.certificate_no}</td>
-                    </tr>
-                    <tr>
-                        <th>Audited Compliance Standard</th>
-                        <td>${currentCertData.standard}</td>
-                    </tr>
-                    <tr>
-                        <th>Scope of Certified Actions</th>
-                        <td style="font-size:0.95rem; font-weight:500;">${currentCertData.scope}</td>
-                    </tr>
-                    <tr>
-                        <th>Valid Period Dates</th>
-                        <td>Issued: ${currentCertData.issue_date} &bull; Valid Until: ${currentCertData.expiry_date}</td>
-                    </tr>
-                    <tr>
-                        <th>Registration Status</th>
-                        <td style="color: ${currentCertData.status.toLowerCase() === 'active' ? 'green' : 'red'};">${currentCertData.status.toUpperCase()}</td>
-                    </tr>
-                    <tr>
-                        <th>Corporate Office / Plant Site</th>
-                        <td>${currentCertData.city}, ${currentCertData.country}</td>
-                    </tr>
-                    <tr>
-                        <th>Issuing Audit Body</th>
-                        <td>${currentCertData.certification_body}</td>
-                    </tr>
-                    <tr>
-                        <th>Affiliated Accreditation Body</th>
-                        <td>${currentCertData.accreditation_body}</td>
-                    </tr>
-                </table>
-                
-                <div class="print-cert-footer">
-                    <p style="margin-bottom: 4px; font-weight: bold; color: #333;">VERIFICATION SUMMARY DATA &bull; SECURE ONLINE REGISTRY</p>
-                    <p style="margin-bottom: 20px;">Authenticated database validation stamp executed on: ${currentCertData.verified_on}</p>
-                    <div style="border-top: 1px dashed #ccc; padding-top: 15px; max-width: 400px; margin: 0 auto;">
-                        <span style="font-size: 0.75rem; color: #aaa;">Verify online via registry: {{ route('verify') }}</span>
-                    </div>
-                </div>
-            </div>
-        `;
-        
-        window.onafterprint = function() {
-            printArea.classList.add('d-none');
-            printArea.innerHTML = '';
-        };
-
-        printArea.classList.remove('d-none');
-        
-        setTimeout(() => {
-            window.print();
-        }, 150);
-    });
+    // Printing / PDF download is handled by the dedicated printable certificate page
+    // (opened via the modal's Print / Download buttons and the card PDF button).
 
     // Helper functions
     function escapeHtml(string) {
