@@ -37,6 +37,22 @@
                         </select>
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label fw-bold small">Country</label>
+                        <input type="text" name="country" class="form-control" placeholder="e.g. Pakistan" required value="{{ old('country', $certificate->country) }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">City</label>
+                        <input type="text" name="city" class="form-control" placeholder="e.g. Karachi" required value="{{ old('city', $certificate->city) }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Certification Body</label>
+                        <input type="text" name="certification_body" class="form-control" placeholder="e.g. S2 Certification" required value="{{ old('certification_body', $certificate->certification_body) }}">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small">Accreditation Body</label>
+                        <input type="text" name="accreditation_body" class="form-control" placeholder="e.g. PNAC" required value="{{ old('accreditation_body', $certificate->accreditation_body) }}">
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label fw-bold small">Issue Date</label>
                         <input type="date" name="issue_date" class="form-control" required value="{{ old('issue_date', $certificate->issue_date) }}">
                     </div>

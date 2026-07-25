@@ -238,6 +238,116 @@
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             }
         }
+
+        /* Classy Scroll Animation System */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .reveal {
+            opacity: 0;
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        /* Slide Up & Fade */
+        .reveal-up {
+            transform: translateY(40px);
+        }
+
+        /* Slide In Left & Fade */
+        .reveal-left {
+            transform: translateX(-40px);
+        }
+
+        /* Slide In Right & Fade */
+        .reveal-right {
+            transform: translateX(40px);
+        }
+
+        /* Zoom In/Scale & Fade */
+        .reveal-scale {
+            transform: scale(0.95);
+        }
+
+        /* Active States */
+        .reveal.active {
+            opacity: 1;
+            transform: translate(0) scale(1);
+        }
+
+        /* Stagger delay classes for classy visual flows */
+        .delay-100 { transition-delay: 100ms !important; }
+        .delay-200 { transition-delay: 200ms !important; }
+        .delay-300 { transition-delay: 300ms !important; }
+        .delay-400 { transition-delay: 400ms !important; }
+        .delay-500 { transition-delay: 500ms !important; }
+        .delay-600 { transition-delay: 600ms !important; }
+
+        /* Interactive Hover Actions */
+        .hover-card-lift {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            position: relative;
+            top: 0;
+            border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .hover-card-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(45, 86, 161, 0.1) !important;
+            border-color: rgba(65, 139, 44, 0.2) !important;
+        }
+
+        .hover-card-lift i {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hover-card-lift:hover i {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        /* Premium button hover shine effect */
+        .btn-premium {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .btn-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+
+        .btn-premium:hover::before {
+            left: 100%;
+        }
+
+        /* Image zoom container styles for resource cards */
+        .zoom-img-container {
+            overflow: hidden;
+            position: relative;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .zoom-img-container img {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .card:hover .zoom-img-container img {
+            transform: scale(1.06);
+        }
     </style>
     @yield('styles')
 </head>
@@ -379,6 +489,65 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. Intersection Observer for Scroll Reveals
+            const revealElements = document.querySelectorAll('.reveal');
+            if (revealElements.length > 0) {
+                const revealObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: "0px 0px -50px 0px"
+                });
+                revealElements.forEach(el => revealObserver.observe(el));
+            }
+
+            // 2. Animated Statistic Counters
+            const statElements = document.querySelectorAll('.stat-count');
+            if (statElements.length > 0) {
+                const statObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const target = entry.target;
+                            const limit = parseInt(target.getAttribute('data-target'), 10);
+                            const suffix = target.getAttribute('data-suffix') || '';
+                            let count = 0;
+                            const duration = 2000; // 2 seconds
+                            const frameRate = 1000 / 60; // 60fps
+                            const totalFrames = Math.round(duration / frameRate);
+                            let currentFrame = 0;
+
+                            const animate = () => {
+                                currentFrame++;
+                                const progress = currentFrame / totalFrames;
+                                const easeProgress = progress * (2 - progress); // Ease out quadratic
+                                count = Math.floor(easeProgress * limit);
+
+                                if (currentFrame < totalFrames) {
+                                    target.innerText = count + suffix;
+                                    requestAnimationFrame(animate);
+                                } else {
+                                    target.innerText = limit + suffix;
+                                }
+                            };
+
+                            animate();
+                            observer.unobserve(target);
+                        }
+                    });
+                }, {
+                    threshold: 0.2
+                });
+                statElements.forEach(el => statObserver.observe(el));
+            }
+        });
+    </script>
     @yield('scripts')
 </body>
 

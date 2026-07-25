@@ -10,7 +10,7 @@ class AuthController extends Controller
 {
     public function showLogin()
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
+        if (Auth::check() && (Auth::user()->role === 'admin' || (Auth::user()->role_relation && Auth::user()->role_relation->slug === 'admin'))) {
             return redirect()->route('admin.dashboard');
         }
         return view('admin.login');
@@ -24,7 +24,7 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            if (Auth::user()->role === 'admin') {
+            if (Auth::user()->role === 'admin' || (Auth::user()->role_relation && Auth::user()->role_relation->slug === 'admin')) {
                 $request->session()->regenerate();
                 return redirect()->intended(route('admin.dashboard'));
             }

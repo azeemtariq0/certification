@@ -29,6 +29,10 @@ class CertificateController extends Controller
             'issue_date' => 'required|date',
             'expiry_date' => 'required|date|after:issue_date',
             'status' => 'required|string',
+            'country' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'certification_body' => 'required|string|max:255',
+            'accreditation_body' => 'required|string|max:255',
         ]);
 
         Certificate::create($validated);
@@ -51,6 +55,10 @@ class CertificateController extends Controller
             'issue_date' => 'required|date',
             'expiry_date' => 'required|date|after:issue_date',
             'status' => 'required|string',
+            'country' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'certification_body' => 'required|string|max:255',
+            'accreditation_body' => 'required|string|max:255',
         ]);
 
         $certificate->update($validated);

@@ -31,11 +31,14 @@ class UserController extends Controller
             'role_id' => 'required|exists:roles,id',
         ]);
 
+        $role = Role::find($validated['role_id']);
+
         User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role_id' => $validated['role_id'],
+            'role' => $role ? $role->slug : 'user',
         ]);
 
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
@@ -56,10 +59,13 @@ class UserController extends Controller
             'role_id' => 'required|exists:roles,id',
         ]);
 
+        $role = Role::find($validated['role_id']);
+
         $data = [
             'name' => $validated['name'],
             'email' => $validated['email'],
             'role_id' => $validated['role_id'],
+            'role' => $role ? $role->slug : 'user',
         ];
 
         if ($request->filled('password')) {

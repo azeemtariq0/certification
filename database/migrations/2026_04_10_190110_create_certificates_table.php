@@ -20,6 +20,10 @@ return new class extends Migration
             $table->date('issue_date');
             $table->date('expiry_date');
             $table->string('status')->default('Active');
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
+            $table->string('certification_body')->default('S2 Certification');
+            $table->string('accreditation_body')->default('PNAC');
             $table->timestamps();
         });
     }

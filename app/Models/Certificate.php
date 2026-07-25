@@ -13,6 +13,10 @@ class Certificate extends Model
         'scope',
         'issue_date',
         'expiry_date',
-        'status'
+        'status',
+        'country',
+        'city',
+        'certification_body',
+        'accreditation_body'
     ];
 }
