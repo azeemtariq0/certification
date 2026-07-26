@@ -32,7 +32,7 @@
                             </div>
                             <div>
                                 <h6 class="fw-bold mb-1">Corporate Office</h6>
-                                <p class="mb-0 small opacity-75">Plot no 78 Near Parco Head Office Korangi Creek Road, Karachi, Pakistan</p>
+                                <p class="mb-0 small opacity-75">S2 Certification Ltd Rivington, Great Eastern Street, London EC2A 3JF, United Kingdom</p>
                             </div>
                         </div>
 
@@ -41,8 +41,8 @@
                                 <i class="fas fa-phone-alt fa-lg" style="color: var(--theme-blue);"></i>
                             </div>
                             <div>
-                                <h6 class="fw-bold mb-1">Phone / WhatsApp</h6>
-                                <p class="mb-0 small opacity-75">+92 311 8205671<br>+92 304 3278467</p>
+                                <h6 class="fw-bold mb-1">Contact</h6>
+                                <p class="mb-0 small opacity-75">0800 691 1208<br>0800 691 1327</p>
                             </div>
                         </div>
 

@@ -343,10 +343,10 @@
         <div class="container d-flex justify-content-between align-items-center">
             <div class="d-flex gap-4">
                 <span class="tb-item"><i class="fas fa-envelope"></i> <a href="mailto:info@s2cert.com">info@s2cert.com</a></span>
-                <span class="tb-item"><i class="fas fa-phone"></i> <a href="tel:+923118205671">+92 311 8205671</a></span>
+                <span class="tb-item"><i class="fas fa-phone"></i> <a href="tel:08006911208">0800 691 1208</a></span>
             </div>
             <div class="d-flex gap-4 align-items-center">
-                <span class="tb-item"><i class="fab fa-whatsapp"></i> <a href="https://wa.me/923043278467" target="_blank" rel="noopener">+92 304 3278467</a></span>
+                <span class="tb-item"><i class="fas fa-phone"></i> <a href="tel:08006911327" target="_blank" rel="noopener">0800 691 1327</a></span>
                 <span class="tb-item"><i class="fas fa-award"></i> Accredited Certification Body</span>
             </div>
         </div>
@@ -442,10 +442,10 @@
                 <div class="col-lg-4 col-md-6">
                     <h5>Get In Touch</h5>
                     <ul class="list-unstyled footer-links small">
-                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2 text-green"></i> Plot no 78 Near Parco Head Office, Korangi Creek Road, Karachi</li>
-                        <li class="mb-2"><i class="fas fa-phone-alt me-2 text-green"></i> <a href="tel:+923118205671">+92 311 8205671</a></li>
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2 text-green"></i> S2 Certification Ltd Rivington, Great Eastern Street, London EC2A 3JF, United Kingdom</li>
+                        <li class="mb-2"><i class="fas fa-phone-alt me-2 text-green"></i> <a href="tel:08006911208">0800 691 1208</a></li>
                         <li class="mb-2"><i class="fas fa-envelope me-2 text-green"></i> <a href="mailto:info@s2cert.com">info@s2cert.com</a></li>
-                        <li class="mb-2"><i class="fab fa-whatsapp me-2 text-green"></i> <a href="#">+92 304 3278467</a></li>
+                        <li class="mb-2"><i class="fas fa-phone-alt me-2 text-green"></i> <a href="#">0800 691 1327</a></li>
                     </ul>
                 </div>
             </div>
