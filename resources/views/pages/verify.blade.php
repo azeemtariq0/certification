@@ -867,10 +867,10 @@
                             <th>Certification Body</th>
                             <td id="tdCertificationBody">S2 Certification</td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <th>Accreditation Body</th>
                             <td id="tdAccreditationBody">PNAC (Pakistan National Accreditation Council)</td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <th>Verification Status</th>
                             <td class="text-success"><i class="fas fa-shield-alt me-1"></i> Verified on <span id="tdVerifiedOn">18 Jul 2026</span></td>
@@ -1311,7 +1311,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('tdExpiryDate').textContent = item.expiry_date;
         document.getElementById('tdLocation').textContent = `${item.city} / ${item.country}`;
         document.getElementById('tdCertificationBody').textContent = item.certification_body;
-        document.getElementById('tdAccreditationBody').textContent = item.accreditation_body;
+        // document.getElementById('tdAccreditationBody').textContent = item.accreditation_body;
         document.getElementById('tdVerifiedOn').textContent = item.verified_on;
         
         // Status indicator update
