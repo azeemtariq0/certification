@@ -113,7 +113,13 @@
     <!-- Map Section -->
     <section class="mt-5 border-top">
         <div class="ratio ratio-21x9">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3621.571946849491!2d67.1264353!3d24.8105655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391c1d0f55555555%3A0x5555555555555555!2sKorangi%20Creek%20Rd%2C%20Karachi!5e0!3m2!1sen!2s!4v1684496417534!5m2!1sen!2s" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+           <iframe
+    src="https://www.google.com/maps?q=Great%20Eastern%20Street,%20London%20EC2A%203JF,%20United%20Kingdom&output=embed"
+    style="border:0;"
+    allowfullscreen=""
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade">
+</iframe>
         </div>
     </section>
 @endsection
