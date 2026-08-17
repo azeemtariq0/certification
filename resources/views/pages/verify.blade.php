@@ -59,7 +59,7 @@
     /* Premium Search Bar Styling */
     .search-box-outer {
         position: relative;
-        max-width: 750px;
+        max-width: 720px;
         margin: 0 auto;
         z-index: 100;
     }
@@ -70,40 +70,45 @@
         background: #ffffff;
         border: 2px solid #cbd5e1;
         border-radius: 9999px;
-        padding: 6px 12px 6px 24px;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.03), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-        transition: all 0.3s ease;
+        padding: 6px 10px 6px 22px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .search-input-group:focus-within {
         border-color: var(--theme-blue);
-        box-shadow: 0 10px 25px -5px rgba(45, 86, 161, 0.15), 0 8px 10px -6px rgba(45, 86, 161, 0.1);
+        box-shadow: 0 12px 30px -5px rgba(45, 86, 161, 0.2), 0 8px 10px -6px rgba(45, 86, 161, 0.1);
     }
 
     .search-icon-left {
         color: #94a3b8;
-        font-size: 1.25rem;
+        font-size: 1.15rem;
         margin-right: 14px;
+        flex-shrink: 0;
     }
 
     .search-input-field {
         flex-grow: 1;
+        min-width: 0;
         border: none;
         outline: none;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 500;
         color: #0f172a;
         padding: 10px 0;
+        background: transparent;
     }
 
     .search-input-field::placeholder {
         color: #94a3b8;
+        font-size: 0.98rem;
     }
 
     .input-action-buttons {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
+        flex-shrink: 0;
     }
 
     .clear-search-btn {
@@ -111,13 +116,14 @@
         border: none;
         color: #94a3b8;
         cursor: pointer;
-        padding: 5px;
+        padding: 6px 8px;
         display: none;
+        font-size: 0.95rem;
         transition: color 0.2s;
     }
 
     .clear-search-btn:hover {
-        color: #64748b;
+        color: #475569;
     }
 
     .search-loading-spinner {
@@ -139,17 +145,47 @@
         border: none;
         color: #ffffff;
         border-radius: 9999px;
-        padding: 10px 32px;
+        padding: 11px 28px;
         font-weight: 600;
         font-size: 0.95rem;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.3px;
         cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
         transition: all 0.25s ease;
+        box-shadow: 0 4px 10px rgba(45, 86, 161, 0.25);
     }
 
     .submit-search-btn:hover {
         background: #1e3a8a;
         transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(45, 86, 161, 0.35);
+    }
+
+    @media (max-width: 576px) {
+        .search-input-group {
+            border-radius: 20px;
+            padding: 8px 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .search-icon-left {
+            margin-right: 8px;
+        }
+        .search-input-field {
+            font-size: 0.95rem;
+            width: calc(100% - 40px);
+        }
+        .input-action-buttons {
+            width: 100%;
+            justify-content: flex-end;
+        }
+        .submit-search-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 10px;
+        }
     }
 
     /* Dynamic Autocomplete Popover */
@@ -646,21 +682,22 @@
             <div class="search-box-outer">
                 <form id="verifySearchForm">
                     <div class="search-input-group">
-                        <i class="fas fa-search search-icon-left"></i>
+                        <i class="fas fa-magnifying-glass search-icon-left"></i>
                         <input type="text" id="verifySearchInput" name="query" class="search-input-field" 
-                               placeholder="Search by keyword, company name, or certificate..." 
-                               autocomplete="off" value="{{ request('query') }}">
+                               placeholder="Search by Company Name or Certificate / Challan No..." 
+                               autocomplete="off" 
+                               value="{{ request('query', request('search', request('certificate_no', request('company_name', '')))) }}">
                         <div class="input-action-buttons">
+                            <!-- Clear Search Input Button -->
+                            <button type="button" id="clearSearchBtn" class="clear-search-btn" title="Clear search">
+                                <i class="fas fa-times"></i>
+                            </button>
+
                             <!-- Loading Spinner inside search bar -->
                             <div id="searchSpinner" class="search-loading-spinner"></div>
                             
-                            <!-- Clear 'x' Button -->
-                            <button type="button" id="clearSearchBtn" class="clear-search-btn">
-                                <i class="fas fa-times-circle"></i>
-                            </button>
-                            
                             <button type="submit" class="submit-search-btn">
-                                Search
+                                <i class="fas fa-search me-1"></i> Search
                             </button>
                         </div>
                     </div>
@@ -680,19 +717,19 @@
                 <div class="col-md-6 col-lg-3">
                     <div class="guide-card text-center">
                         <div class="guide-icon-wrapper mx-auto">
-                            <i class="fas fa-building"></i>
+                            <i class="fas fa-magnifying-glass"></i>
                         </div>
-                        <h5 class="fw-bold mb-2">Company Search</h5>
-                        <p class="text-muted small mb-0">Search the database using partial or exact company name matching.</p>
+                        <h5 class="fw-bold mb-2">Smart Search</h5>
+                        <p class="text-muted small mb-0">Search instantly by Company Name, Certificate No, or Challan ID.</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="guide-card text-center">
                         <div class="guide-icon-wrapper mx-auto" style="background: rgba(45,86,161,0.1); color: var(--theme-blue);">
-                            <i class="fas fa-magnifying-glass"></i>
+                            <i class="fas fa-shield-halved"></i>
                         </div>
-                        <h5 class="fw-bold mb-2">Certificate Lookup</h5>
-                        <p class="text-muted small mb-0">Enter the unique certificate number for instant direct records validation.</p>
+                        <h5 class="fw-bold mb-2">Instant Verification</h5>
+                        <p class="text-muted small mb-0">Validate accreditation validity, scopes, and active certification status.</p>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3">
@@ -707,10 +744,10 @@
                 <div class="col-md-6 col-lg-3">
                     <div class="guide-card text-center">
                         <div class="guide-icon-wrapper mx-auto" style="background: rgba(45,86,161,0.1); color: var(--theme-blue);">
-                            <i class="fas fa-file-invoice"></i>
+                            <i class="fas fa-file-arrow-down"></i>
                         </div>
                         <h5 class="fw-bold mb-2">Print & Verify</h5>
-                        <p class="text-muted small mb-0">View full scopes, verify issuing bodies, and print formal audit transcripts.</p>
+                        <p class="text-muted small mb-0">View complete ledger profiles, download PDFs, and print certificate copies.</p>
                     </div>
                 </div>
             </div>
@@ -906,8 +943,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultsLayout = document.getElementById('resultsLayout');
     const searchForm = document.getElementById('verifySearchForm');
     const searchInput = document.getElementById('verifySearchInput');
-    const searchSpinner = document.getElementById('searchSpinner');
     const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const searchSpinner = document.getElementById('searchSpinner');
     const autocompletePopover = document.getElementById('autocompletePopover');
     const resultsCardContainer = document.getElementById('resultsCardContainer');
     const resultsCountHeader = document.getElementById('resultsCountHeader');
@@ -922,6 +959,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // State Variables
     let currentQuery = '';
+
     let selectedFilters = {
         countries: [],
         cities: [],
@@ -933,29 +971,45 @@ document.addEventListener('DOMContentLoaded', function() {
     let activeResultData = [];
     let currentCertData = null; // for print
 
-    // Initial check: if there is search parameter in URL on load
-    if (searchInput.value.trim() !== '') {
+    // Initial check: if there are search parameters in URL on load
+    if (searchInput && searchInput.value.trim() !== '') {
+        if (clearSearchBtn) clearSearchBtn.style.display = 'block';
         triggerSearch(searchInput.value.trim());
     }
 
-    // Toggle Clear 'x' Button Visibility
-    searchInput.addEventListener('input', function() {
-        if (this.value.trim() !== '') {
-            clearSearchBtn.style.display = 'block';
-            debouncedAutocomplete(this.value.trim());
-        } else {
+    // Input typing listener: toggle clear button & trigger autocomplete
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const q = this.value.trim();
+            if (clearSearchBtn) {
+                clearSearchBtn.style.display = q.length > 0 ? 'block' : 'none';
+            }
+            if (q.length >= 2) {
+                debouncedAutocomplete(q);
+            } else {
+                autocompletePopover.style.display = 'none';
+            }
+        });
+
+        // Hide popover on Escape key
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                autocompletePopover.style.display = 'none';
+            }
+        });
+    }
+
+    // Clear search input button action
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', function() {
+            if (searchInput) {
+                searchInput.value = '';
+                searchInput.focus();
+            }
             clearSearchBtn.style.display = 'none';
             autocompletePopover.style.display = 'none';
-        }
-    });
-
-    // Clear Button Click
-    clearSearchBtn.addEventListener('click', function() {
-        searchInput.value = '';
-        this.style.display = 'none';
-        autocompletePopover.style.display = 'none';
-        searchInput.focus();
-    });
+        });
+    }
 
     // Close Autocomplete Popover when clicking outside
     document.addEventListener('click', function(e) {
@@ -964,14 +1018,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle Form Submit
+    // Handle Form Submit on Search Button Click
     searchForm.addEventListener('submit', function(e) {
         e.preventDefault();
         autocompletePopover.style.display = 'none';
-        const query = searchInput.value.trim();
-        if (query) {
-            triggerSearch(query);
-        }
+        const query = searchInput ? searchInput.value.trim() : '';
+        triggerSearch(query);
     });
 
     // Accordion Toggle Behavior
@@ -1042,7 +1094,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(res => res.json())
         .then(res => {
-            if (res.success && res.suggestions.length > 0) {
+            if (res.success && res.suggestions && res.suggestions.length > 0) {
                 renderAutocompleteDropdown(res.suggestions, query);
             } else {
                 autocompletePopover.style.display = 'none';
@@ -1058,7 +1110,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const div = document.createElement('div');
             div.className = 'autocomplete-item';
             
-            // Highlight match in company name
+            // Highlight matches
             const highlightedName = highlightQuery(item.company_name, query);
             const highlightedNo = highlightQuery(item.certificate_no, query);
 
@@ -1071,10 +1123,13 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             
             div.addEventListener('click', function() {
-                searchInput.value = item.company_name;
-                clearSearchBtn.style.display = 'block';
+                const val = (item.certificate_no && item.certificate_no.toLowerCase().includes(query.toLowerCase())) 
+                    ? item.certificate_no 
+                    : item.company_name;
+                searchInput.value = val;
+                if (clearSearchBtn) clearSearchBtn.style.display = 'block';
                 autocompletePopover.style.display = 'none';
-                triggerSearch(item.company_name);
+                triggerSearch(val);
             });
             
             autocompletePopover.appendChild(div);
@@ -1085,14 +1140,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Highlight helper
     function highlightQuery(text, query) {
         if (!text) return '';
+        if (!query) return escapeHtml(text);
         const escapeRegex = (str) => str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
         const regex = new RegExp("(" + escapeRegex(query) + ")", "gi");
-        return text.replace(regex, "<mark class='highlight-text'>$1</mark>");
+        return escapeHtml(text).replace(regex, "<mark class='highlight-text'>$1</mark>");
     }
 
-    // Main search execution entry point
+    // Search trigger on button click or item selection
     function triggerSearch(query) {
-        currentQuery = query;
+        if (!query || query.trim() === '') {
+            return;
+        }
+
+        currentQuery = query.trim();
         selectedFilters = {
             countries: [],
             cities: [],
@@ -1100,10 +1160,8 @@ document.addEventListener('DOMContentLoaded', function() {
             statuses: []
         };
         
-        // Change layout mode to Active Results
         pageContainer.classList.add('search-active');
         searchSpinner.style.display = 'block';
-        clearSearchBtn.style.display = 'none';
         
         fetchFilteredResults();
     }
@@ -1112,7 +1170,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function fetchFilteredResults() {
         searchSpinner.style.display = 'block';
         
-        const payload = {
+        let payload = {
             query: currentQuery,
             countries: selectedFilters.countries,
             cities: selectedFilters.cities,
@@ -1132,9 +1190,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(res => res.json())
         .then(data => {
             searchSpinner.style.display = 'none';
-            if (searchInput.value.trim() !== '') {
-                clearSearchBtn.style.display = 'block';
-            }
             
             if (data.success) {
                 activeResultData = data.data;
@@ -1158,14 +1213,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // Result summary text
         const totalFound = res.total;
         const filteredTotal = res.filtered_total;
+        const searchLabel = currentQuery ? `"${escapeHtml(currentQuery)}"` : 'search criteria';
 
         if (totalFound !== filteredTotal) {
-            resultsCountHeader.innerHTML = `Showing ${filteredTotal} of ${totalFound} entities matching "${escapeHtml(currentQuery)}"`;
+            resultsCountHeader.innerHTML = `Showing ${filteredTotal} of ${totalFound} entities matching ${searchLabel}`;
         } else {
-            resultsCountHeader.innerHTML = `${totalFound} certified ${totalFound === 1 ? 'entity' : 'entities'} found matching "${escapeHtml(currentQuery)}"`;
+            resultsCountHeader.innerHTML = `${totalFound} certified ${totalFound === 1 ? 'entity' : 'entities'} found matching ${searchLabel}`;
         }
 
-        // Render every matching result — no login or premium gate
         const cardsToRender = res.data;
 
         cardsToRender.forEach(item => {
@@ -1196,8 +1251,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             <span class="val"><i class="fas fa-bookmark text-primary"></i>${item.standard}</span>
                         </div>
                         <div class="detail-item-small">
-                            <span class="lbl">Certificate No</span>
-                            <span class="val text-primary fw-bold"><i class="fas fa-file-invoice"></i>${item.certificate_no}</span>
+                            <span class="lbl">Certificate / Challan No</span>
+                            <span class="val text-primary fw-bold"><i class="fas fa-file-invoice"></i>${highlightQuery(item.certificate_no, currentQuery)}</span>
                         </div>
                         <div class="detail-item-small">
                             <span class="lbl">Location</span>
@@ -1252,6 +1307,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update filter lists and counts
     function updateSidebarFilterCounts(filters) {
+        if (!filters) return;
         renderFilterCategory('standardCheckboxes', filters.standards, 'standards');
         renderFilterCategory('countryCheckboxes', filters.countries, 'countries');
         renderFilterCategory('cityCheckboxes', filters.cities, 'cities');
@@ -1261,6 +1317,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Dynamic category checkbox injection
     function renderFilterCategory(containerId, items, filterKey) {
         const container = document.getElementById(containerId);
+        if (!container) return;
         container.innerHTML = '';
         
         if (!items || items.length === 0) {
@@ -1311,7 +1368,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('tdExpiryDate').textContent = item.expiry_date;
         document.getElementById('tdLocation').textContent = `${item.city} / ${item.country}`;
         document.getElementById('tdCertificationBody').textContent = item.certification_body;
-        // document.getElementById('tdAccreditationBody').textContent = item.accreditation_body;
         document.getElementById('tdVerifiedOn').textContent = item.verified_on;
         
         // Status indicator update
@@ -1328,11 +1384,9 @@ document.addEventListener('DOMContentLoaded', function() {
         myModal.show();
     }
 
-    // Printing / PDF download is handled by the dedicated printable certificate page
-    // (opened via the modal's Print / Download buttons and the card PDF button).
-
     // Helper functions
     function escapeHtml(string) {
+        if (!string) return '';
         const map = {
             '&': '&amp;',
             '<': '&lt;',

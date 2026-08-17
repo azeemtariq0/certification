@@ -38,16 +38,20 @@ class PublicController extends Controller
 
     public function apiSearch(Request $request)
     {
-        $search = $request->input('query');
+        $search = trim((string) $request->input('query', $request->input('search', $request->input('certificate_no', $request->input('company_name', '')))));
         
-        // Autocomplete search suggestions
+        // Autocomplete search suggestions (only show when exact match is complete)
         if ($request->boolean('autocomplete')) {
             $suggestions = collect();
-            if ($search) {
-                $certs = \App\Models\Certificate::where('company_name', 'LIKE', "%$search%")
-                    ->orWhere('certificate_no', 'LIKE', "%$search%")
-                    ->limit(8)
-                    ->get();
+            if ($search !== '') {
+                $certs = \App\Models\Certificate::where(function ($q) use ($search) {
+                    $q->where('company_name', $search)
+                      ->orWhere('certificate_no', $search)
+                      ->orWhereRaw('LOWER(TRIM(company_name)) = ?', [strtolower($search)])
+                      ->orWhereRaw('LOWER(TRIM(certificate_no)) = ?', [strtolower($search)]);
+                })
+                ->limit(8)
+                ->get();
                     
                 $suggestions = $certs->map(function ($cert) {
                     return [
@@ -63,16 +67,21 @@ class PublicController extends Controller
             ]);
         }
 
-        // Standard filter search
-        $query = \App\Models\Certificate::query();
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('company_name', 'LIKE', "%$search%")
-                  ->orWhere('standard', 'LIKE', "%$search%")
-                  ->orWhere('certificate_no', 'LIKE', "%$search%");
-            });
+        // Standard filter search (exact match only for company name or certificate / challan no)
+        if ($search === '') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please enter an exact Company Name or Certificate / Challan No to search.'
+            ]);
         }
+
+        $query = \App\Models\Certificate::query();
+        $query->where(function ($q) use ($search) {
+            $q->where('company_name', $search)
+              ->orWhere('certificate_no', $search)
+              ->orWhereRaw('LOWER(TRIM(company_name)) = ?', [strtolower($search)])
+              ->orWhereRaw('LOWER(TRIM(certificate_no)) = ?', [strtolower($search)]);
+        });
 
         // Get count aggregates before sidebar filters are applied, so sidebar filter options are relevant to the query
         $allMatching = $query->get();
@@ -80,7 +89,7 @@ class PublicController extends Controller
         if ($allMatching->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'No certificate matches your search.'
+                'message' => 'No certificate found matching exact Company Name or Certificate / Challan No: "' . $search . '"'
             ]);
         }
 

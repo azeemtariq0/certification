@@ -181,10 +181,10 @@
                     <div class="lbl">Certification Body</div>
                     <div class="val">{{ $certificate->certification_body ?? 'S2 Certification' }}</div>
                 </div>
-                <div class="detail-row full">
+                <!-- <div class="detail-row full">
                     <div class="lbl">Accreditation Body</div>
                     <div class="val">{{ $certificate->accreditation_body ?? 'PNAC (Pakistan National Accreditation Council)' }}</div>
-                </div>
+                </div> -->
             </div>
 
             <div class="cert-foot">
