@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Certificate;
+use App\Models\TrainingCertificate;
 use App\Models\User;
 
 class DashboardController extends Controller
@@ -13,12 +14,15 @@ class DashboardController extends Controller
         $stats = [
             'certificates' => Certificate::count(),
             'active_certificates' => Certificate::where('status', 'Active')->count(),
-            'inactive_certificates' => Certificate::where('status', '!=', 'Active')->count(),
+            'trainings' => TrainingCertificate::count(),
+            'valid_trainings' => TrainingCertificate::where('status', 'VALID')->count(),
+            'expired_trainings' => TrainingCertificate::where('status', 'EXPIRED')->count(),
             'users' => User::count(),
         ];
 
         $recentCertificates = Certificate::latest()->take(5)->get();
+        $recentTrainings = TrainingCertificate::latest()->take(5)->get();
 
-        return view('admin.dashboard', compact('stats', 'recentCertificates'));
+        return view('admin.dashboard', compact('stats', 'recentCertificates', 'recentTrainings'));
     }
 }

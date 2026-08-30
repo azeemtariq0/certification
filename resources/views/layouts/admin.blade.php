@@ -180,23 +180,196 @@
         .badge.bg-danger { background: rgba(192,57,43,0.12) !important; color: #c0392b !important; }
         .badge.bg-warning { background: rgba(230,162,60,0.15) !important; color: #b8860b !important; }
 
-        /* ============ FORMS ============ */
-        .form-label { font-family: var(--heading-font); font-weight: 600; font-size: 0.85rem; color: var(--dark-blue); }
+        /* ============ ACTION BUTTONS ============ */
+        .table-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: flex-end;
+        }
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.92rem;
+            border: 1px solid transparent;
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            background: #fff;
+            cursor: pointer;
+            padding: 0;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .action-btn-view {
+            background: #eff6ff;
+            color: #2563eb;
+            border-color: #dbeafe;
+        }
+        .action-btn-view:hover {
+            background: #2563eb;
+            color: #fff;
+            border-color: #2563eb;
+        }
+        .action-btn-print {
+            background: #f0fdf4;
+            color: #16a34a;
+            border-color: #bbf7d0;
+        }
+        .action-btn-print:hover {
+            background: #16a34a;
+            color: #fff;
+            border-color: #16a34a;
+        }
+        .action-btn-edit {
+            background: #fefce8;
+            color: #ca8a04;
+            border-color: #fef08a;
+        }
+        .action-btn-edit:hover {
+            background: #ca8a04;
+            color: #fff;
+            border-color: #ca8a04;
+        }
+        .action-btn-delete {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+        .action-btn-delete:hover {
+            background: #dc2626;
+            color: #fff;
+            border-color: #dc2626;
+        }
+
+        /* ============ STATUS PILLS ============ */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-family: var(--heading-font);
+            font-weight: 700;
+            font-size: 0.76rem;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+        .status-pill::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .status-pill-valid {
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+        .status-pill-valid::before { background: #10b981; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2); }
+
+        .status-pill-expired {
+            background: #fffbeb;
+            color: #d97706;
+            border: 1px solid #fde68a;
+        }
+        .status-pill-expired::before { background: #f59e0b; }
+
+        .status-pill-suspended {
+            background: #f0f9ff;
+            color: #0284c7;
+            border: 1px solid #bae6fd;
+        }
+        .status-pill-suspended::before { background: #0ea5e9; }
+
+        .status-pill-revoked {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+        .status-pill-revoked::before { background: #ef4444; }
+
+        .status-pill-cancelled {
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+        .status-pill-cancelled::before { background: #94a3b8; }
+
+        /* ============ PREMIUM FORM ELEMENTS ============ */
+        .form-label {
+            font-family: var(--heading-font);
+            font-weight: 700;
+            font-size: 0.84rem;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
         .form-control, .form-select {
-            border-radius: 10px; border: 1px solid var(--line); padding: 11px 14px; font-size: 0.92rem;
+            border-radius: 12px;
+            border: 1.5px solid #cbd5e1;
+            padding: 11px 16px;
+            font-size: 0.92rem;
+            color: #0f172a;
+            background-color: #ffffff;
+            transition: all 0.25s ease;
         }
         .form-control:focus, .form-select:focus {
             border-color: var(--theme-green);
-            box-shadow: 0 0 0 0.2rem rgba(65,139,44,0.12);
+            box-shadow: 0 0 0 3.5px rgba(65, 139, 44, 0.18);
+            background-color: #fff;
+        }
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+        .input-group-text {
+            border-radius: 12px 0 0 12px;
+            border: 1.5px solid #cbd5e1;
+            border-right: none;
+            background: #f8fafc;
+            color: #64748b;
+        }
+        .input-group .form-control {
+            border-radius: 0 12px 12px 0;
         }
 
-        /* ============ ALERTS ============ */
-        .alert { border-radius: 12px; border: none; font-size: 0.9rem; }
-        .alert-success { background: rgba(65,139,44,0.1); color: var(--theme-green-dark); }
-        .alert-danger { background: rgba(192,57,43,0.1); color: #a5281c; }
+        /* File dropzone / upload box */
+        .file-upload-box {
+            border: 2px dashed #cbd5e1;
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+        .file-upload-box:hover {
+            border-color: var(--theme-green);
+            background: #f0fdf4;
+        }
 
-        /* Pagination */
-        .pagination { --bs-pagination-color: var(--dark-blue); --bs-pagination-active-bg: var(--theme-green); --bs-pagination-active-border-color: var(--theme-green); --bs-pagination-border-radius: 10px; }
+        /* Avatar chips */
+        .avatar-chip {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            color: var(--theme-blue);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            font-family: var(--heading-font);
+            border: 1px solid #e2e8f0;
+            flex-shrink: 0;
+        }
 
         /* Overlay for mobile */
         .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(20,33,61,0.45); z-index:1040; }
@@ -231,9 +404,13 @@
                 <i class="fas fa-gauge-high"></i> Dashboard
             </a>
 
+            <div class="nav-section">Certifications &amp; Training</div>
             @if(auth()->user()->hasPermission('manage-certificates'))
+            <a href="{{ route('admin.training-certificates.index') }}" class="nav-link {{ Route::is('admin.training-certificates.*') ? 'active' : '' }}">
+                <i class="fas fa-user-graduate"></i> Training &amp; Auditor Certs
+            </a>
             <a href="{{ route('admin.certificates.index') }}" class="nav-link {{ Route::is('admin.certificates.*') ? 'active' : '' }}">
-                <i class="fas fa-certificate"></i> Certificates
+                <i class="fas fa-building"></i> Company Certifications
             </a>
             @endif
 

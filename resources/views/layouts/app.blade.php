@@ -133,6 +133,35 @@
         .navbar-nav .nav-link:hover::after,
         .navbar-nav .nav-link.active::after { transform: scaleX(1); }
 
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+            animation: fadeInDown 0.25s ease forwards;
+        }
+        .dropdown-menu {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 14px 35px rgba(20, 33, 61, 0.12);
+            padding: 8px;
+        }
+        .dropdown-item {
+            font-family: var(--heading-font);
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: var(--dark-blue);
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .dropdown-item:hover, .dropdown-item.active {
+            background: #f0fdf4;
+            color: var(--theme-green);
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .nav-cta {
             background: var(--theme-green);
             color: #fff !important;
@@ -373,8 +402,22 @@
                         <li class="nav-item">
                             <a class="nav-link {{ Route::is('services') ? 'active' : '' }}" href="{{ route('services') }}">Services</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ Route::is('verify') ? 'active' : '' }}" href="{{ route('verify') }}">Verify Certificate</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle {{ Route::is('verify*') ? 'active' : '' }}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Verification <i class="fas fa-chevron-down ms-1" style="font-size: 0.75rem;"></i>
+                            </a>
+                            <ul class="dropdown-menu shadow-lg" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item {{ Route::is('verify') ? 'active' : '' }}" href="{{ route('verify') }}">
+                                        <i class="fas fa-building text-primary me-2"></i> Company ISO Verification
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item {{ Route::is('verify.training*') ? 'active' : '' }}" href="{{ route('verify.training') }}">
+                                        <i class="fas fa-user-graduate text-success me-2"></i> Training &amp; Auditor Verification
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ Route::is('contact') ? 'active' : '' }}" href="{{ route('contact') }}">Contact Us</a>
@@ -411,7 +454,7 @@
                     <a href="{{ route('home') }}" class="d-inline-block bg-white p-2 rounded mb-3">
                         <img src="{{ asset('images/logo.png') }}" alt="S2 Certification" style="height: 50px;">
                     </a>
-                    <p class="small pe-lg-4">S2 Certification is a global provider of management system certification and inspection services, helping organisations achieve excellence through international standards.</p>
+                    <p class="small pe-lg-4">S2 Certification is a global provider of management system certification, auditor credentialing, and inspection services, helping organisations and professionals achieve excellence.</p>
                     <div class="social-links mt-3">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -430,13 +473,12 @@
                     </ul>
                 </div>
                 <div class="col-lg-2 col-md-6">
-                    <h5>Quick Links</h5>
+                    <h5>Verification</h5>
                     <ul class="list-unstyled footer-links">
-                        <li><a href="{{ route('home') }}">Home</a></li>
-                        <li><a href="{{ route('about') }}">About Us</a></li>
-                        <li><a href="{{ route('services') }}">Services</a></li>
-                        <li><a href="{{ route('verify') }}">Verify Certificate</a></li>
-                        <li><a href="{{ route('contact') }}">Contact Us</a></li>
+                        <li><a href="{{ route('verify.training') }}"><i class="fas fa-user-graduate me-1 text-success"></i> Verify Training Cert</a></li>
+                        <li><a href="{{ route('verify') }}"><i class="fas fa-building me-1 text-primary"></i> Verify Company Cert</a></li>
+                        <li><a href="{{ route('about') }}">About Accreditation</a></li>
+                        <li><a href="{{ route('contact') }}">Report an Issue</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4 col-md-6">

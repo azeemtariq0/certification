@@ -41,14 +41,14 @@
                         @endif
                     </td>
                     <td class="text-end pe-4">
-                        <div class="btn-group">
-                            <a href="{{ route('admin.certificates.edit', $cert->id) }}" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-edit"></i>
+                        <div class="table-actions">
+                            <a href="{{ route('admin.certificates.edit', $cert->id) }}" class="action-btn action-btn-edit" title="Edit Certificate">
+                                <i class="fas fa-pen-to-square"></i>
                             </a>
-                            <form action="{{ route('admin.certificates.destroy', $cert->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                            <form action="{{ route('admin.certificates.destroy', $cert->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this certificate?')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger ms-1">
+                                <button type="submit" class="action-btn action-btn-delete" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>

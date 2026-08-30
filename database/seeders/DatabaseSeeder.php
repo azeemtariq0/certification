@@ -238,5 +238,7 @@ class DatabaseSeeder extends Seeder
         foreach ($certificates as $cert) {
             \App\Models\Certificate::create($cert);
         }
+
+        $this->call(TrainingCertificateSeeder::class);
     }
 }
